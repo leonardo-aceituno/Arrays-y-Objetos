@@ -27,44 +27,44 @@ let radiologia = [
 ]
 
 
-const imprime = (primera,ultima) => { let texto = `<b> * Primera atencion:</b> ${primera.paciente} - ${primera.prevision}  |  <b> * Última atencion:</b> ${ultima.paciente} - ${ultima.prevision}`; }
-
-const buscar = array => {
-    let primera;
-    let ultima;
-    for(let i in array){
-        if(i == 0){ 
-            primera = array[i]; 
-        }
-        if(i == (array.length - 1)){ 
-            ultima = array[i]; 
-        }        
-    }
-
-    let texto = imprime(primera,ultima);
-    return texto;
-
+let area = depto => { 
+    let plantilla = `
+        <div id='area-01' class='fs-4  text-center bg-info py-2 text-light fw-bold'>${depto}</div>` 
+    return plantilla
 }
 
-const printTabla = array => {
-    let texto = `
-    <thead class="table-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Hora</th>
-            <th scope="col">Especialista</th>
-            <th scope="col">Paciente</th>
-            <th scope="col">Rut</th>
-            <th scope="col">Prevision</th>
-        </tr>
-    </thead>
-    <tbody>`
-            
-    let j = 0;
+let primeraUltima = array => {
+    let plantilla = `
+    <div class='my-1 d-flex justify-content-between border border-info p-2'>
+        <div> <b> * Primera atencion:</b> ${array[0].paciente} - ${array[0].prevision} </div>
+        <div> <b> * Última atencion:</b> ${array[array.length -1].paciente} - ${array[array.length -1].prevision} </div>
+    </div>`
+    return plantilla
+}    
+
+
+let printTabla = (array,depto) => {
+    let j = 1
+    let plantilla = `<section class='container mt-5' id='${depto}'>` 
+                  + area(depto) 
+                  + primeraUltima(array)
+                  + `<table class="table table-hover table-bordered border-info table-sm table-striped">
+                  <thead class="">
+                      <tr class='text-center'>
+                          <th scope="col" >#</th>
+                          <th scope="col">Hora</th>
+                          <th scope="col">Especialista</th>
+                          <th scope="col">Paciente</th>
+                          <th scope="col">Rut</th>
+                          <th scope="col">Prevision</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  `    
+    
     for(let i in array) {
-        j++
-        texto += `
-            <tr>
+        plantilla += `
+            <tr class='text-center'>
                 <th scope="row"> ${j}</th>
                 <td> ${array[i].hora} </td>
                 <td> ${array[i].especialista}</td>
@@ -72,36 +72,16 @@ const printTabla = array => {
                 <td> ${array[i].rut}</td>
                 <td> ${array[i].prevision}</td>
             </tr>`
+        j++
     }
-    texto += `</tbody>`
-    return texto
+    plantilla += `</tbody></table></section>`
+    document.write(plantilla)
 }
 
 
 
 // MAIN
-document.querySelector('#titulo').innerHTML = `<p> ESTADISTICAS CENTRO MÉDICO ÑUÑOA </p>`
-
-// Dental
-document.querySelector('#area-01').innerHTML = `<p> DENTAL </p>`
-document.querySelector('#info-01').innerHTML = buscar(dental);
-document.querySelector("#cuerpo-tabla-01").innerHTML=  printTabla(dental);
-
-// Traumatologia
-document.querySelector('#area-02').innerHTML = `<p> TRAUMATOLOGíA </p>`
-document.querySelector('#info-02').innerHTML = buscar(traumatologia);
-document.querySelector("#cuerpo-tabla-02").innerHTML=  printTabla(traumatologia);
-
-// Radiologia
-document.querySelector('#area-03').innerHTML = `<p> RADIOLOGÍA </p>`
-document.querySelector('#info-03').innerHTML = buscar(traumatologia);
-document.querySelector("#cuerpo-tabla-03").innerHTML=  printTabla(traumatologia);
-
-
-
-
-
-
-
-
-
+document.write('<div class="text-center my-3 fs-1 fw-bold">ESTADISTICAS CENTRO MÉDICO ÑUÑOA</div>')
+printTabla(dental,"DENTAL");
+printTabla(traumatologia,"TRAUMATOLOGIA");
+printTabla(radiologia,"RADIOLOGIA");
